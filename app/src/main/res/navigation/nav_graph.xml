@@ -9,5 +9,14 @@
         android:id="@+id/cardList"
         android:name="com.dleite.horsefeverguia.ui.fragment.CardListFragment"
         android:label="CardList"
-        tools:layout="@layout/fragment_list_card"/>
+        tools:layout="@layout/fragment_list_card">
+        <action
+            android:id="@+id/action_cardList_to_cardDetailsFragment"
+            app:destination="@id/cardDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cardDetailsFragment"
+        android:name="com.dleite.horsefeverguia.ui.fragment.CardDetailsFragment"
+        android:label="CardDetailsFragment"
+        tools:layout="@layout/fragment_details_card"/>
 </navigation>
