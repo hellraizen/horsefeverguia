@@ -13,7 +13,6 @@ class CardDetailsFragment : BaseFragment(R.layout.fragment_details_card) {
 
     private val viewModel: CardDatailsViewModel by viewModel()
 
-    private val cardAdapter = CardAdapter()
 
     override fun baseInitEvents() {
         super.baseInitEvents()
