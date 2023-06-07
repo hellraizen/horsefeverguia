@@ -6,3 +6,7 @@ interface GetCardUserCase {
     suspend operator fun invoke() : List<CardHorse>
 }
 
+interface GetCardIdUserCase{
+
+    suspend operator fun invoke(id: String) : CardHorse
+}

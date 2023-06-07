@@ -2,11 +2,13 @@ package com.dleite.horsefeverguia.di
 
 import com.dleite.horsefeverguia.data.repository.firebase.CardRepository
 import com.dleite.horsefeverguia.data.repository.firebase.CardRepositoryImpl
+import com.dleite.horsefeverguia.domain.usercase.card.GetCardIdUserCase
+import com.dleite.horsefeverguia.domain.usercase.card.GetCardIdUserCaseImpl
 import com.dleite.horsefeverguia.domain.usercase.card.GetCardUserCase
 import com.dleite.horsefeverguia.domain.usercase.card.GetCardUserCaseImpl
-import com.dleite.horsefeverguia.ui.adapter.CardAdapter
 import com.dleite.horsefeverguia.ui.fragment.CardDetailsFragment
 import com.dleite.horsefeverguia.ui.fragment.CardListFragment
+import com.dleite.horsefeverguia.ui.viewmodel.CardDatailsViewModel
 import com.dleite.horsefeverguia.ui.viewmodel.CardListViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -31,10 +33,14 @@ val userCaseModule = module {
     factory<GetCardUserCase> {
         GetCardUserCaseImpl(get())
     }
+    factory<GetCardIdUserCase> {
+        GetCardIdUserCaseImpl(get())
+    }
 }
 
 val viewModelModule = module {
-    viewModel<CardListViewModel>{ CardListViewModel(getCardUserCase = get()) }
+    viewModel<CardListViewModel> { CardListViewModel(getCardUserCase = get()) }
+    viewModel<CardDatailsViewModel> { (id: String) -> CardDatailsViewModel(id, get()) }
 }
 
 val firebaseModule = module {

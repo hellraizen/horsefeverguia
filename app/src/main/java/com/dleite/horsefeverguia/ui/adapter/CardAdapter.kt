@@ -9,7 +9,7 @@ import com.dleite.horsefeverguia.databinding.ListItemBinding
 import com.dleite.horsefeverguia.ui.models.CardHorse
 
 class CardAdapter(
-    private val cardHorse: List<CardHorse>,
+    private var cardHorse: List<CardHorse>,
     private val onItemClickListener: (cardHorse: CardHorse) -> Unit
 ) : RecyclerView.Adapter<CardAdapter.CardsViewHolder>() {
 
@@ -22,6 +22,11 @@ class CardAdapter(
                 false
             )
         return CardsViewHolder(itemBinding,onItemClickListener)
+    }
+    fun setFilteredList(cardHorse: List<CardHorse>){
+        this.cardHorse = cardHorse
+        notifyDataSetChanged()
+
     }
 
 

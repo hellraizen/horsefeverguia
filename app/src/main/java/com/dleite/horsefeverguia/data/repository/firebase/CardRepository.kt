@@ -5,5 +5,5 @@ import com.dleite.horsefeverguia.domain.models.CardHorseModel
 interface CardRepository {
 
     suspend fun getCards(): List<CardHorseModel>
-
+    suspend fun getCardId(id: String): CardHorseModel
 }

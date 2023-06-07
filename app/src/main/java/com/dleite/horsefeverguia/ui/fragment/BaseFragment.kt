@@ -2,6 +2,7 @@ package com.dleite.horsefeverguia.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 
 open class BaseFragment(fragment: Int) : Fragment(fragment) {
@@ -16,5 +17,9 @@ open class BaseFragment(fragment: Int) : Fragment(fragment) {
     }
 
     open fun baseInitEvents() {
+    }
+
+    open fun loadError(errorMessage: String) {
+        Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
     }
 }

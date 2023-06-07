@@ -1,28 +1,35 @@
 package com.dleite.horsefeverguia.ui.viewmodel
 
-import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.dleite.horsefeverguia.domain.usercase.card.GetCardUserCase
-import com.dleite.horsefeverguia.ui.models.CardHorse
+import com.dleite.horsefeverguia.ui.state.CardListStateView
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class CardListViewModel(
     private val getCardUserCase: GetCardUserCase
 ) : ViewModel() {
 
-    private val _cardsData = MutableLiveData<List<CardHorse>>()
-    val cardsData: LiveData<List<CardHorse>> = _cardsData
+    init {
+        getCards()
+    }
+
+    private val _states = MutableStateFlow(CardListStateView(isLoading = true))
+    val states: StateFlow<CardListStateView> = _states
 
     fun getCards() = viewModelScope.launch {
-        try {
-            val cards = getCardUserCase()
-            _cardsData.value = cards
-
-        } catch (e: Exception) {
-            Log.d("userssViewModel", e.toString())
+        runCatching {
+            getCardUserCase()
+        }.onSuccess {
+            _states.value = _states.value.copy(isLoading = false, cardList = it)
+        }.onFailure {
+            _states.value = _states.value.copy(
+                isLoading = false,
+                cardList = emptyList(),
+                errorMessage = "Algo deu errado"
+            )
         }
     }
 

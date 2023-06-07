@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">horsefeverguia</string>
     <string name="back">Voltar</string>
+    <string name="pesquisar">Pesquisar</string>
 </resources>

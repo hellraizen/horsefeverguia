@@ -4,7 +4,7 @@ import com.google.firebase.firestore.PropertyName
 
 
 data class CardHorseModel(
-    val id: String? = null,
+    val id: String = "",
     val title: String = "",
     val description: String = "",
     @get:PropertyName("img")
