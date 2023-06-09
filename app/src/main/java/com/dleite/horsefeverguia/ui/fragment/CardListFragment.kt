@@ -2,11 +2,9 @@ package com.dleite.horsefeverguia.ui.fragment
 
 import android.view.View
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.dleite.horsefeverguia.R
 import com.dleite.horsefeverguia.databinding.FragmentListCardBinding
 import com.dleite.horsefeverguia.ui.adapter.CardAdapter

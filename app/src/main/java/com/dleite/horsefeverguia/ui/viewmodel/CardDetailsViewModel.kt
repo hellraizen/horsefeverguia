@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class CardDatailsViewModel(
+class CardDetailsViewModel(
     private val cardId: String,
     private val getCardIdUserCase: GetCardIdUserCase
 ) : ViewModel() {

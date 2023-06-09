@@ -20,6 +20,7 @@ open class BaseFragment(fragment: Int) : Fragment(fragment) {
     }
 
     open fun loadError(errorMessage: String) {
+        if (errorMessage == "") return
         Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
     }
 }

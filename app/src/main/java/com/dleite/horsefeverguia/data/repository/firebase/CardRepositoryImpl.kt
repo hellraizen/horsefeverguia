@@ -25,6 +25,11 @@ class CardRepositoryImpl(
 
                     continuation.resumeWith(Result.success(cards))
                 }
+
+            firestore.collection(COLECAO_FIRESTORE_PRODUTOS).get()
+                .addOnFailureListener { exception ->
+                    continuation.resumeWith(Result.failure(exception))
+                }
         }
     }
 
@@ -41,6 +46,10 @@ class CardRepositoryImpl(
                         }
                     }
                     continuation.resumeWith(Result.success(card))
+                }
+            firestore.collection(COLECAO_FIRESTORE_PRODUTOS).get()
+                .addOnFailureListener { exception ->
+                    continuation.resumeWith(Result.failure(exception))
                 }
         }
     }

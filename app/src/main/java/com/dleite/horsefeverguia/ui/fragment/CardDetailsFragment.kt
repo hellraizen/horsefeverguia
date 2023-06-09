@@ -7,7 +7,7 @@ import com.dleite.horsefeverguia.R
 import com.dleite.horsefeverguia.databinding.FragmentDetailsCardBinding
 import com.dleite.horsefeverguia.ui.core.viewBinding
 import com.dleite.horsefeverguia.ui.models.CardHorse
-import com.dleite.horsefeverguia.ui.viewmodel.CardDatailsViewModel
+import com.dleite.horsefeverguia.ui.viewmodel.CardDetailsViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -21,7 +21,7 @@ class CardDetailsFragment : BaseFragment(R.layout.fragment_details_card) {
         args.cardId
     }
 
-    private val viewModel: CardDatailsViewModel by viewModel { parametersOf(cardId) }
+    private val viewModel: CardDetailsViewModel by viewModel { parametersOf(cardId) }
 
 
     override fun baseInitEvents() {

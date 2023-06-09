@@ -8,7 +8,7 @@ import com.dleite.horsefeverguia.domain.usercase.card.GetCardUserCase
 import com.dleite.horsefeverguia.domain.usercase.card.GetCardUserCaseImpl
 import com.dleite.horsefeverguia.ui.fragment.CardDetailsFragment
 import com.dleite.horsefeverguia.ui.fragment.CardListFragment
-import com.dleite.horsefeverguia.ui.viewmodel.CardDatailsViewModel
+import com.dleite.horsefeverguia.ui.viewmodel.CardDetailsViewModel
 import com.dleite.horsefeverguia.ui.viewmodel.CardListViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -40,7 +40,7 @@ val userCaseModule = module {
 
 val viewModelModule = module {
     viewModel<CardListViewModel> { CardListViewModel(getCardUserCase = get()) }
-    viewModel<CardDatailsViewModel> { (id: String) -> CardDatailsViewModel(id, get()) }
+    viewModel<CardDetailsViewModel> { (id: String) -> CardDetailsViewModel(id, get()) }
 }
 
 val firebaseModule = module {
