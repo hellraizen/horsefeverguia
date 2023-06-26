@@ -4,9 +4,11 @@ import com.dleite.horsefeverguia.domain.models.CardHorseModel
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-private const val COLECAO_FIRESTORE_PRODUTOS = "cards"
+private const val COLECAO_FIRESTORE_CARDS = "cards"
 
 class CardRepositoryImpl(
     private val firestore: FirebaseFirestore
@@ -14,22 +16,26 @@ class CardRepositoryImpl(
     override suspend fun getCards(): List<CardHorseModel> {
         var cards: List<CardHorseModel> = emptyList()
         return suspendCoroutine { continuation ->
-            firestore.collection(COLECAO_FIRESTORE_PRODUTOS)
-                .addSnapshotListener() { s, _ ->
-                    s?.let { snapshot ->
-                        cards = snapshot.documents
-                            .mapNotNull { card ->
-                                converteParaProduto(card)
-                            }
+            try {
+                var control = true
+                firestore.collection(COLECAO_FIRESTORE_CARDS)
+                    .orderBy("title")
+                    .addSnapshotListener { s, _ ->
+                        s?.let { snapshot ->
+                            cards = snapshot.documents
+                                .mapNotNull { card ->
+                                    coverToCardHouseModel(card)
+                                }
+                        }
+                        if (control){
+                            continuation.resume(cards)
+                            control = false
+                        }
                     }
+            } catch (e: Exception) {
+                continuation.resumeWithException(e)
 
-                    continuation.resumeWith(Result.success(cards))
-                }
-
-            firestore.collection(COLECAO_FIRESTORE_PRODUTOS).get()
-                .addOnFailureListener { exception ->
-                    continuation.resumeWith(Result.failure(exception))
-                }
+            }
         }
     }
 
@@ -37,36 +43,44 @@ class CardRepositoryImpl(
     override suspend fun getCardId(id: String): CardHorseModel {
         var card = CardHorseModel()
         return suspendCoroutine { continuation ->
-            firestore.collection(COLECAO_FIRESTORE_PRODUTOS)
-                .document(id)
-                .addSnapshotListener { s, _ ->
-                    s?.let { cardDocument ->
-                        converteParaProduto(cardDocument).let {
-                            card = it!!
+            try {
+                var control = true
+                firestore.collection(COLECAO_FIRESTORE_CARDS)
+                    .document(id)
+                    .addSnapshotListener { s, _ ->
+                        s?.let { cardDocument ->
+                            coverToCardHouseModel(cardDocument).let {
+                                card = it!!
+                            }
+                        }
+                        if (control){
+                            continuation.resume(card)
+                            control = false
                         }
                     }
-                    continuation.resumeWith(Result.success(card))
-                }
-            firestore.collection(COLECAO_FIRESTORE_PRODUTOS).get()
-                .addOnFailureListener { exception ->
-                    continuation.resumeWith(Result.failure(exception))
-                }
+            } catch (e: Exception) {
+                continuation.resumeWithException(e)
+
+            }
+
         }
     }
 
-    private fun converteParaProduto(documento: DocumentSnapshot): CardHorseModel? =
-        documento.toObject<ProdutoDocumento>()?.paraCardHorseModel(documento.id)
+    private fun coverToCardHouseModel(document: DocumentSnapshot): CardHorseModel? =
+        document.toObject<CardHoseDocumento>()?.paraCardHorseModel(document.id)
 
-    private class ProdutoDocumento(
+    private class CardHoseDocumento(
         val title: String = "",
         val description: String = "",
-        val img: String = ""
+        val img: String = "",
+        val category: String = ""
     ) {
         fun paraCardHorseModel(id: String): CardHorseModel = CardHorseModel(
             id = id,
             title = title,
             description = description,
-            img = img
+            img = img,
+            category = category
         )
     }
 }

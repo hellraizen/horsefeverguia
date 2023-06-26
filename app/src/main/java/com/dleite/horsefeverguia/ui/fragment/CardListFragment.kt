@@ -10,10 +10,13 @@ import com.dleite.horsefeverguia.databinding.FragmentListCardBinding
 import com.dleite.horsefeverguia.ui.adapter.CardAdapter
 import com.dleite.horsefeverguia.ui.core.viewBinding
 import com.dleite.horsefeverguia.ui.models.CardHorse
+import com.dleite.horsefeverguia.ui.models.FilterItem
+import com.dleite.horsefeverguia.ui.models.toChip
 import com.dleite.horsefeverguia.ui.viewmodel.CardListViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
+
 
 class CardListFragment : BaseFragment(R.layout.fragment_list_card) {
 
@@ -21,6 +24,7 @@ class CardListFragment : BaseFragment(R.layout.fragment_list_card) {
 
     private val viewModel: CardListViewModel by viewModel()
 
+    private val filterItem = FilterItem.getListFilter()
     private lateinit var adapterLocation: CardAdapter
     private lateinit var cardListLocation: List<CardHorse>
 
@@ -31,6 +35,7 @@ class CardListFragment : BaseFragment(R.layout.fragment_list_card) {
     override fun baseInitEvents() {
         super.baseInitEvents()
         setupSearch()
+        setFilter()
     }
 
     override fun baseInitObservers() {
@@ -42,7 +47,17 @@ class CardListFragment : BaseFragment(R.layout.fragment_list_card) {
                 loadError(it.errorMessage)
             }
         }
+
     }
+
+    private fun setFilter() {
+        binding.let {
+            filterItem.forEach { filter ->
+                it.chipGroupFilter.addView(filter.toChip(requireContext()))
+            }
+        }
+    }
+
 
     private fun setRecyclerView(cards: List<CardHorse>) {
 
